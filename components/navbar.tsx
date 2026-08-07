@@ -19,6 +19,9 @@ export function Navbar() {
 
   useEffect(() => { setIsOpen(false) }, [pathname])
 
+  // Hide on admin pages
+  if (pathname.startsWith('/admin')) return null
+
   const links = [
     { label: 'الأعمال',  href: '/books' },
     { label: 'عن الكاتب', href: '/about' },
@@ -37,7 +40,6 @@ export function Navbar() {
             السيد الريس
           </Link>
 
-          {/* Desktop */}
           <div className="hidden md:flex items-center gap-6">
             {links.map((l) => (
               <Link key={l.href} href={l.href}
@@ -49,7 +51,6 @@ export function Navbar() {
             </Link>
           </div>
 
-          {/* Hamburger */}
           <button className="md:hidden p-2 text-ink" onClick={() => setIsOpen(!isOpen)} aria-label="القائمة">
             {isOpen ? <X size={22} /> : <Menu size={22} />}
           </button>

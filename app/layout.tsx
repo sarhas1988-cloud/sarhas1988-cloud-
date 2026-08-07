@@ -31,7 +31,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ar" dir="rtl" className="bg-obsidian">
+    <html lang="ar" dir="rtl" className="bg-obsidian" style={{ backgroundColor: '#050302' }}>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@300;400;500;700;800;900&display=swap"

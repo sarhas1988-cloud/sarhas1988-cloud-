@@ -1,0 +1,67 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/utils/supabase/client'
+import { BookOpen, FileText, Mail, LogOut } from 'lucide-react'
+
+export default function DashboardPage() {
+  const [email, setEmail]   = useState('')
+  const [loading, setLoading] = useState(true)
+  const router = useRouter()
+
+  useEffect(() => {
+    const init = async () => {
+      const supabase = createClient()
+      if (!supabase) { router.push('/admin/login'); return }
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) { router.push('/admin/login'); return }
+      setEmail(user.email ?? '')
+      setLoading(false)
+    }
+    init()
+  }, [router])
+
+  const handleLogout = async () => {
+    const supabase = createClient()
+    if (supabase) await supabase.auth.signOut()
+    router.push('/admin/login')
+  }
+
+  if (loading) {
+    return <div className="min-h-screen bg-obsidian flex items-center justify-center"><p className="text-ink/50 font-tajawal">جاري التحميل...</p></div>
+  }
+
+  return (
+    <div className="min-h-screen bg-obsidian p-4 sm:p-8">
+      <div className="max-w-5xl mx-auto">
+        <div className="flex items-center justify-between mb-10">
+          <div>
+            <h1 className="font-aref text-3xl text-ember mb-1">لوحة التحكم</h1>
+            <p className="text-ink/50 font-tajawal text-sm">{email}</p>
+          </div>
+          <button onClick={handleLogout} className="flex items-center gap-2 px-4 py-2 rounded bg-blood/20 border border-blood text-blood hover:bg-blood/30 transition-colors font-tajawal text-sm">
+            <LogOut size={16} /> تسجيل الخروج
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          {[
+            { href: '/admin/books', icon: BookOpen, label: 'الأعمال',    sub: 'إدارة الكتب والروايات', color: 'text-ember' },
+            { href: '/admin/posts', icon: FileText, label: 'المدونة',    sub: 'إنشاء وتحرير المقالات', color: 'text-gold' },
+            { href: '/admin/subscribers', icon: Mail, label: 'المشتركون', sub: 'إدارة قائمة البريد',    color: 'text-blood' },
+          ].map(({ href, icon: Icon, label, sub, color }) => (
+            <Link key={href} href={href}>
+              <div className="card-lifted rounded-lg p-7 hover:border-ember transition-colors cursor-pointer group">
+                <Icon size={30} className={`${color} mb-4`} />
+                <h2 className="font-aref text-2xl text-ink mb-1">{label}</h2>
+                <p className="text-ink/50 font-tajawal text-sm">{sub}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}

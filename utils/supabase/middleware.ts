@@ -36,8 +36,8 @@ export async function updateSession(request: NextRequest) {
   // Refresh the session
   await supabase.auth.getSession()
 
-  // Protect admin routes
-  if (request.nextUrl.pathname.startsWith('/admin')) {
+  // Protect admin routes (except login page)
+  if (request.nextUrl.pathname.startsWith('/admin') && !request.nextUrl.pathname.startsWith('/admin/login')) {
     const {
       data: { session },
     } = await supabase.auth.getSession()

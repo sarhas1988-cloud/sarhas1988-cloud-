@@ -109,8 +109,8 @@
     overflow-x: clip;
     width: 100%;
     min-height: 100svh;
-    background-color: #050302;
-    background-image: radial-gradient(120% 90% at 50% -10%, #1a0f08 0%, #0B0806 42%, #050302 100%);
+    background-color: #0e0a07;
+    background-image: radial-gradient(120% 90% at 50% -10%, #1f1410 0%, #120d09 42%, #0a0705 100%);
   }
 
   /* Film grain — simplified, no fixed positioning */

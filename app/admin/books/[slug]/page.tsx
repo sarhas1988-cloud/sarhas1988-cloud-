@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/utils/supabase/client'
@@ -9,7 +9,8 @@ import type { Book, BuyLink } from '@/types/supabase'
 
 interface BuyLinkRow { id?: string; label: string; url: string }
 
-export default function EditBookPage({ params }: { params: { slug: string } }) {
+export default function EditBookPage({ params: paramsPromise }: { params: Promise<{ slug: string }> }) {
+  const params = React.use(paramsPromise)
   const router  = useRouter()
   const [book, setBook]       = useState<Book | null>(null)
   const [saving, setSaving]   = useState(false)

@@ -1,13 +1,14 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/utils/supabase/client'
 import { ArrowRight } from 'lucide-react'
 import type { Post } from '@/types/supabase'
 
-export default function EditPostPage({ params }: { params: { slug: string } }) {
+export default function EditPostPage({ params: paramsPromise }: { params: Promise<{ slug: string }> }) {
+  const params = React.use(paramsPromise)
   const router  = useRouter()
   const [post, setPost]       = useState<Post | null>(null)
   const [saving, setSaving]   = useState(false)

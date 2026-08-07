@@ -7,22 +7,24 @@ import { getBookCover, getPlaceholderColor } from '@/types/supabase'
 
 export const dynamic = 'force-dynamic'
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   try {
+    const { slug } = await params
     const supabase = await createClient()
-    const { data } = await supabase.from('books').select('title,tagline').eq('slug', params.slug).single()
+    const { data } = await supabase.from('books').select('title,tagline').eq('slug', slug).single()
     if (!data) return {}
     return { title: `${data.title} — السيد الريس`, description: data.tagline ?? '' }
   } catch { return {} }
 }
 
-export default async function BookPage({ params }: { params: { slug: string } }) {
+export default async function BookPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   const supabase = await createClient()
 
   const { data: book } = await supabase
     .from('books')
     .select('*')
-    .eq('slug', params.slug)
+    .eq('slug', slug)
     .eq('published', true)
     .single()
 

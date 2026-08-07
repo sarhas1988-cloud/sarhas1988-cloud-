@@ -105,6 +105,8 @@
     @apply text-ink font-tajawal;
     position: relative;
     overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
     background: radial-gradient(120% 90% at 50% -10%, #1a0f08 0%, #0B0806 42%, #050302 100%);
   }
 

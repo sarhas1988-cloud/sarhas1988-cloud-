@@ -1,7 +1,15 @@
+'use client'
+
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { BookOpen, User, FileText, Globe, ExternalLink, ShoppingBag } from 'lucide-react'
 
 export function Footer() {
+  const pathname = usePathname()
+
+  // Hide on admin pages
+  if (pathname.startsWith('/admin')) return null
+
   const year = new Date().getFullYear()
   return (
     <footer className="border-t border-gold-hairline py-10 sm:py-14 px-5 sm:px-8" style={{ backgroundColor: '#0e0a07' }}>

@@ -5,18 +5,24 @@ import Link from 'next/link'
 import { createClient } from '@/utils/supabase/client'
 import { Check, X, Trash2, ArrowRight, Star } from 'lucide-react'
 
-interface ReviewWithBook {
+interface ReviewRow {
   id: string
   reviewer_name: string
   rating: number
   comment: string | null
   approved: boolean
   created_at: string
-  books: { title: string } | null
+  books: { title: string }[] | { title: string } | null
+}
+
+function getBookTitle(books: ReviewRow['books']): string {
+  if (!books) return ''
+  if (Array.isArray(books)) return books[0]?.title ?? ''
+  return books.title ?? ''
 }
 
 export default function AdminReviewsPage() {
-  const [reviews, setReviews] = useState<ReviewWithBook[]>([])
+  const [reviews, setReviews] = useState<ReviewRow[]>([])
   const [loading, setLoading] = useState(true)
   const [msg, setMsg] = useState('')
 
@@ -29,7 +35,7 @@ export default function AdminReviewsPage() {
       .from('reviews')
       .select('id, reviewer_name, rating, comment, approved, created_at, books(title)')
       .order('created_at', { ascending: false })
-    setReviews((data as ReviewWithBook[]) ?? [])
+    setReviews((data as ReviewRow[]) ?? [])
     setLoading(false)
   }
 
@@ -53,7 +59,6 @@ export default function AdminReviewsPage() {
   }
 
   const fmt = (d: string) => new Date(d).toLocaleDateString('ar-EG')
-
   const pending = reviews.filter((r) => !r.approved).length
 
   return (
@@ -88,7 +93,7 @@ export default function AdminReviewsPage() {
                     <div className="flex items-center gap-2 mb-1">
                       <p className="font-tajawal font-semibold text-ink text-sm">{r.reviewer_name}</p>
                       <span className="text-ink/30">·</span>
-                      <p className="text-ink/40 font-tajawal text-xs">{r.books?.title ?? ''}</p>
+                      <p className="text-ink/40 font-tajawal text-xs">{getBookTitle(r.books)}</p>
                     </div>
                     <div className="flex gap-0.5 mb-1" dir="ltr">
                       {[1,2,3,4,5].map((i) => (
@@ -99,17 +104,13 @@ export default function AdminReviewsPage() {
                     <p className="text-ink/30 font-tajawal text-xs mt-2">{fmt(r.created_at)}</p>
                   </div>
                   <div className="flex items-center gap-1 shrink-0">
-                    <button
-                      onClick={() => toggleApproval(r.id, r.approved)}
+                    <button onClick={() => toggleApproval(r.id, r.approved)}
                       title={r.approved ? 'إخفاء' : 'اعتماد'}
-                      className={`p-2 rounded hover:bg-obsidian-lighter transition-colors ${r.approved ? 'text-gold' : 'text-ink/30'}`}
-                    >
+                      className={`p-2 rounded hover:bg-obsidian-lighter transition-colors ${r.approved ? 'text-gold' : 'text-ink/30'}`}>
                       {r.approved ? <Check size={18} /> : <X size={18} />}
                     </button>
-                    <button
-                      onClick={() => handleDelete(r.id)}
-                      className="p-2 rounded hover:bg-obsidian-lighter text-blood transition-colors"
-                    >
+                    <button onClick={() => handleDelete(r.id)}
+                      className="p-2 rounded hover:bg-obsidian-lighter text-blood transition-colors">
                       <Trash2 size={18} />
                     </button>
                   </div>

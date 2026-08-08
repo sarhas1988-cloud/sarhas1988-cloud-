@@ -106,3 +106,29 @@ insert into public.books (slug, title, series, type, edition, award, tagline, sy
 ('kawabis',   'كوابيس الظلام',  null,           'مجموعة قصصية',   null,              null,                              null, null, '#2a2622', 6, true),
 ('abriaa',    'أبرياء وقتلة',   null,           'مجموعة قصصية',   null,              null,                              'يقال أحياناً إن الإنسان حيوانٌ كاسر — إلا أن في هذا القول إهانةً للحيوانات.', 'مجموعة قصصية تستكشف الحدود الرفيعة بين البراءة والجريمة، بين الضحية والجلاد.', '#2c2450', 7, true)
 on conflict (slug) do nothing;
+
+-- ============================================================
+-- CONTACTS (نموذج التواصل)
+-- ============================================================
+create table if not exists public.contacts (
+  id uuid primary key default uuid_generate_v4(),
+  name text not null,
+  email text not null,
+  message text not null,
+  read boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
+alter table public.contacts enable row level security;
+
+create policy "public insert contacts" on public.contacts
+  for insert with check (true);
+
+create policy "admin read contacts" on public.contacts
+  for select to authenticated using (true);
+
+create policy "admin update contacts" on public.contacts
+  for update to authenticated using (true) with check (true);
+
+create policy "admin delete contacts" on public.contacts
+  for delete to authenticated using (true);

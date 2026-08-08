@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
+import { SearchButton } from '@/components/search-modal'
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -19,13 +20,14 @@ export function Navbar() {
 
   useEffect(() => { setIsOpen(false) }, [pathname])
 
-  // Hide on admin pages
   if (pathname.startsWith('/admin')) return null
 
   const links = [
-    { label: 'الأعمال',  href: '/books' },
-    { label: 'عن الكاتب', href: '/about' },
-    { label: 'المدونة',  href: '/blog' },
+    { label: 'الأعمال',       href: '/books' },
+    { label: 'قلادة الشمس',  href: '/universe' },
+    { label: 'عن الكاتب',    href: '/about' },
+    { label: 'المدونة',       href: '/blog' },
+    { label: 'تواصل',         href: '/contact' },
   ]
 
   const active = (h: string) => pathname === h || pathname.startsWith(h + '/')
@@ -40,20 +42,26 @@ export function Navbar() {
             السيد الريس
           </Link>
 
-          <div className="hidden md:flex items-center gap-6">
+          {/* Desktop */}
+          <div className="hidden md:flex items-center gap-5">
             {links.map((l) => (
               <Link key={l.href} href={l.href}
-                className={`font-tajawal text-sm ${active(l.href) ? 'text-ember' : 'text-ink/70 hover:text-ember'}`}
+                className={`font-tajawal text-sm ${active(l.href) ? 'text-ember' : 'text-ink/70 hover:text-ember'} transition-colors`}
               >{l.label}</Link>
             ))}
-            <Link href="/#join" className="bg-ember text-obsidian px-5 py-1.5 rounded font-tajawal font-semibold text-sm">
+            <SearchButton />
+            <Link href="/#join" className="bg-ember text-white px-5 py-1.5 rounded-lg font-tajawal font-semibold text-sm hover:bg-ember/90 transition-colors">
               القصة المجانية
             </Link>
           </div>
 
-          <button className="md:hidden p-2 text-ink" onClick={() => setIsOpen(!isOpen)} aria-label="القائمة">
-            {isOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
+          {/* Mobile buttons */}
+          <div className="md:hidden flex items-center gap-1">
+            <SearchButton />
+            <button className="p-2 text-ink" onClick={() => setIsOpen(!isOpen)} aria-label="القائمة">
+              {isOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -65,7 +73,7 @@ export function Navbar() {
             >{l.label}</Link>
           ))}
           <Link href="/#join" onClick={() => setIsOpen(false)}
-            className="block w-full bg-ember text-obsidian py-2.5 rounded font-tajawal font-semibold text-center mt-2">
+            className="block w-full bg-ember text-white py-2.5 rounded-lg font-tajawal font-semibold text-center mt-2">
             القصة المجانية
           </Link>
         </div>

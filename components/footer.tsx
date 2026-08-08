@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { BookOpen, User, FileText, Globe, ExternalLink, ShoppingBag } from 'lucide-react'
+import { BookOpen, User, FileText, Globe, ExternalLink, ShoppingBag, HelpCircle, Mail, Shield } from 'lucide-react'
 
 export function Footer() {
   const pathname = usePathname()
@@ -25,14 +25,17 @@ export function Footer() {
             <h3 className="font-aref text-base text-ink mb-4">الموقع</h3>
             <nav className="space-y-3">
               {[
-                { label: 'كل الأعمال', href: '/books', icon: BookOpen },
-                { label: 'عن الكاتب', href: '/about', icon: User },
-                { label: 'المدونة', href: '/blog', icon: FileText },
+                { label: 'كل الأعمال',    href: '/books',    icon: BookOpen },
+                { label: 'قلادة الشمس',   href: '/universe', icon: BookOpen },
+                { label: 'عن الكاتب',     href: '/about',    icon: User },
+                { label: 'المدونة',        href: '/blog',     icon: FileText },
+                { label: 'أسئلة شائعة',   href: '/faq',      icon: HelpCircle },
+                { label: 'تواصل معنا',    href: '/contact',  icon: Mail },
               ].map((l) => (
                 <Link key={l.href} href={l.href}
                   className="flex items-center gap-3 text-ink/70 hover:text-ember transition-colors font-tajawal text-sm group">
-                  <span className="w-8 h-8 rounded-lg bg-ember/10 flex items-center justify-center group-hover:bg-ember/20 transition-colors">
-                    <l.icon size={18} className="text-ember" />
+                  <span className="w-7 h-7 rounded-lg bg-ember/10 flex items-center justify-center group-hover:bg-ember/20 transition-colors">
+                    <l.icon size={15} className="text-ember" />
                   </span>
                   {l.label}
                 </Link>
@@ -44,14 +47,14 @@ export function Footer() {
             <h3 className="font-aref text-base text-ink mb-4">تابِع</h3>
             <nav className="space-y-3">
               {[
-                { label: 'فيسبوك', href: '#', icon: Globe },
+                { label: 'فيسبوك',   href: '#', icon: Globe },
                 { label: 'إنستغرام', href: '#', icon: ExternalLink },
-                { label: 'جودريدز', href: '#', icon: BookOpen },
+                { label: 'جودريدز',  href: '#', icon: BookOpen },
               ].map((l) => (
                 <a key={l.label} href={l.href} target="_blank" rel="noopener"
                   className="flex items-center gap-3 text-ink/70 hover:text-ember transition-colors font-tajawal text-sm group">
-                  <span className="w-8 h-8 rounded-lg bg-gold/10 flex items-center justify-center group-hover:bg-gold/20 transition-colors">
-                    <l.icon size={18} className="text-gold" />
+                  <span className="w-7 h-7 rounded-lg bg-gold/10 flex items-center justify-center group-hover:bg-gold/20 transition-colors">
+                    <l.icon size={15} className="text-gold" />
                   </span>
                   {l.label}
                 </a>
@@ -63,14 +66,14 @@ export function Footer() {
             <h3 className="font-aref text-base text-ink mb-4">الشراء</h3>
             <nav className="space-y-3">
               {[
-                { label: 'أمازون', href: '#', icon: ShoppingBag },
-                { label: 'جرير', href: '#', icon: ShoppingBag },
+                { label: 'أمازون',    href: '#', icon: ShoppingBag },
+                { label: 'جرير',      href: '#', icon: ShoppingBag },
                 { label: 'نيل وفرات', href: '#', icon: Globe },
               ].map((l) => (
                 <a key={l.label} href={l.href} target="_blank" rel="noopener"
                   className="flex items-center gap-3 text-ink/70 hover:text-ember transition-colors font-tajawal text-sm group">
-                  <span className="w-8 h-8 rounded-lg bg-ember/10 flex items-center justify-center group-hover:bg-ember/20 transition-colors">
-                    <l.icon size={18} className="text-ember" />
+                  <span className="w-7 h-7 rounded-lg bg-ember/10 flex items-center justify-center group-hover:bg-ember/20 transition-colors">
+                    <l.icon size={15} className="text-ember" />
                   </span>
                   {l.label}
                 </a>
@@ -79,9 +82,14 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gold-hairline pt-6 flex flex-col sm:flex-row justify-between gap-2 text-xs text-ink/40 font-tajawal">
+        <div className="border-t border-gold-hairline pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-ink/40 font-tajawal">
           <span>© {year} السيد الريس. جميع الحقوق محفوظة.</span>
-          <span>نشر وتوزيع: إبهار · تصميم الأغلفة: يوسف السيد</span>
+          <div className="flex gap-4">
+            <Link href="/privacy" className="flex items-center gap-1 hover:text-ember transition-colors">
+              <Shield size={12} /> سياسة الخصوصية
+            </Link>
+            <span>نشر وتوزيع: إبهار · أغلفة: يوسف السيد</span>
+          </div>
         </div>
       </div>
     </footer>

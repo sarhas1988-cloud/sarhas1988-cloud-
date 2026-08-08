@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
-import { BookOpen, FileText, Mail, Star, LogOut } from 'lucide-react'
+import { BookOpen, FileText, Mail, Star, MessageSquare, LogOut } from 'lucide-react'
 
 export default function DashboardPage() {
-  const [email, setEmail]     = useState('')
+  const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
@@ -46,12 +46,13 @@ export default function DashboardPage() {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {[
-            { href: '/admin/books',       icon: BookOpen, label: 'الأعمال',     sub: 'إدارة الكتب والروايات',    color: 'text-ember' },
-            { href: '/admin/posts',       icon: FileText, label: 'المدونة',     sub: 'إنشاء وتحرير المقالات',    color: 'text-gold' },
-            { href: '/admin/reviews',     icon: Star,     label: 'التقييمات',   sub: 'اعتماد وإدارة آراء القرّاء', color: 'text-ember' },
-            { href: '/admin/subscribers', icon: Mail,     label: 'المشتركون',   sub: 'إدارة قائمة البريد',        color: 'text-blood' },
+            { href: '/admin/books',       icon: BookOpen,      label: 'الأعمال',     sub: 'إدارة الكتب والروايات',      color: 'text-ember' },
+            { href: '/admin/posts',       icon: FileText,      label: 'المدونة',     sub: 'إنشاء وتحرير المقالات',      color: 'text-gold' },
+            { href: '/admin/reviews',     icon: Star,          label: 'التقييمات',   sub: 'اعتماد وإدارة آراء القرّاء', color: 'text-ember' },
+            { href: '/admin/contacts',    icon: MessageSquare, label: 'الرسائل',     sub: 'رسائل التواصل من الزوار',    color: 'text-gold' },
+            { href: '/admin/subscribers', icon: Mail,          label: 'المشتركون',   sub: 'إدارة قائمة البريد',          color: 'text-blood' },
           ].map(({ href, icon: Icon, label, sub, color }) => (
             <Link key={href} href={href}>
               <div className="card-lifted rounded-xl p-6 hover:border-ember/30 transition-colors cursor-pointer group">

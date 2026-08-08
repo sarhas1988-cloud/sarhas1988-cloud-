@@ -16,11 +16,13 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: 'السيد الريس',
     locale: 'ar_AR',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'السيد الريس — كاتب الثريلر والأساطير المصرية' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'السيد الريس | كاتب الثريلر والأساطير المصرية',
     description: 'صاحب عالم «قلادة الشمس» — حيث يلتقي الموت بالطقوس، ويُعاد كتابةُ التاريخ من خلف الظلام.',
+    images: ['/og-image.png'],
   },
   icons: {
     icon: [

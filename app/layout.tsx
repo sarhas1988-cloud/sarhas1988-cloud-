@@ -8,10 +8,18 @@ import { PageTransition } from '@/components/page-transition'
 export const metadata: Metadata = {
   title: 'السيد الريس | كاتب الثريلر والأساطير المصرية',
   description: 'استكشف عالم قلادة الشمس — حيث يلتقي الموت بالطقوس، ويُعاد كتابةُ التاريخ من خلف الظلام.',
+  metadataBase: new URL('https://sarhas1988-cloud.vercel.app'),
   openGraph: {
     title: 'السيد الريس | كاتب الثريلر والأساطير المصرية',
-    description: 'عالم قلادة الشمس — الموت والطقوس والأساطير المصرية',
-    type: 'website', siteName: 'السيد الريس',
+    description: 'صاحب عالم «قلادة الشمس» — حيث يلتقي الموت بالطقوس، ويُعاد كتابةُ التاريخ من خلف الظلام.',
+    type: 'website',
+    siteName: 'السيد الريس',
+    locale: 'ar_AR',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'السيد الريس | كاتب الثريلر والأساطير المصرية',
+    description: 'صاحب عالم «قلادة الشمس» — حيث يلتقي الموت بالطقوس، ويُعاد كتابةُ التاريخ من خلف الظلام.',
   },
   icons: {
     icon: [

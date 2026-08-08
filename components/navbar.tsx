@@ -27,6 +27,7 @@ export function Navbar() {
     { label: 'قلادة الشمس',  href: '/universe' },
     { label: 'عن الكاتب',    href: '/about' },
     { label: 'المدونة',       href: '/blog' },
+    { label: 'الفعاليات',    href: '/events' },
     { label: 'تواصل',         href: '/contact' },
   ]
 

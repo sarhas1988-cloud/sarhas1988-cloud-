@@ -31,6 +31,7 @@ export function Footer() {
                 { label: 'المدونة',        href: '/blog',     icon: FileText },
                 { label: 'أسئلة شائعة',   href: '/faq',      icon: HelpCircle },
                 { label: 'تواصل معنا',    href: '/contact',  icon: Mail },
+                { label: 'سياسة الخصوصية', href: '/privacy',  icon: Shield },
               ].map((l) => (
                 <Link key={l.href} href={l.href}
                   className="flex items-center gap-3 text-ink/70 hover:text-ember transition-colors font-tajawal text-sm group">
@@ -84,12 +85,7 @@ export function Footer() {
 
         <div className="border-t border-gold-hairline pt-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-ink/40 font-tajawal">
           <span>© {year} السيد الريس. جميع الحقوق محفوظة.</span>
-          <div className="flex gap-4">
-            <Link href="/privacy" className="flex items-center gap-1 hover:text-ember transition-colors">
-              <Shield size={12} /> سياسة الخصوصية
-            </Link>
-            <span>نشر وتوزيع: إبهار · أغلفة: يوسف السيد</span>
-          </div>
+          <span>نشر وتوزيع: إبهار · أغلفة: يوسف السيد</span>
         </div>
       </div>
     </footer>

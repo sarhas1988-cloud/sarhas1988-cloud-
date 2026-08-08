@@ -43,7 +43,16 @@ export interface Subscriber {
   created_at: string
 }
 
-// Local fallback covers when cover_url is null
+export interface Review {
+  id: string
+  book_id: string
+  reviewer_name: string
+  rating: number
+  comment?: string | null
+  approved: boolean
+  created_at: string
+}
+
 export const LOCAL_COVERS: Record<string, string> = {
   toqoos:    '/images/covers/toqoos.jpg',
   zoroaster: '/images/covers/zoroaster.jpg',
@@ -68,5 +77,5 @@ export function getBookCover(book: Pick<Book, 'slug' | 'cover_url'>): string | n
 }
 
 export function getPlaceholderColor(book: Pick<Book, 'slug' | 'placeholder_color'>): string {
-  return book.placeholder_color ?? PLACEHOLDER_COLORS[book.slug] ?? '#0B0806'
+  return book.placeholder_color ?? PLACEHOLDER_COLORS[book.slug] ?? '#28231e'
 }

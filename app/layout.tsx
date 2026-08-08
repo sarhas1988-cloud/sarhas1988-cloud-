@@ -4,6 +4,7 @@ import './globals.css'
 import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
 import { PageTransition } from '@/components/page-transition'
+import { EventPulse } from '@/components/event-pulse'
 
 export const metadata: Metadata = {
   title: 'السيد الريس | كاتب الثريلر والأساطير المصرية',
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Navbar />
         <PageTransition>{children}</PageTransition>
         <Footer />
+        <EventPulse />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

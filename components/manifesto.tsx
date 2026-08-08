@@ -11,7 +11,7 @@ export function Manifesto() {
       className={`py-14 sm:py-24 px-5 sm:px-8 border-t border-gold-hairline relative transition-all duration-700 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}
-      style={{ backgroundColor: '#100B07' }}
+      
     >
       <div className="max-w-3xl mx-auto text-center">
         <blockquote className="font-aref text-xl sm:text-3xl lg:text-4xl text-ink leading-relaxed mb-10 sm:mb-14">

@@ -42,7 +42,7 @@ export function Hero() {
   }, [])
 
   const cover = latestBook ? getBookCover(latestBook) : null
-  const nameChars = 'السيد الريس'.split('')
+  const nameWords = ['السيد', 'الريس']
 
   return (
     <section className="relative min-h-svh flex flex-col items-center justify-between overflow-hidden pt-14 pb-6">
@@ -84,19 +84,19 @@ export function Hero() {
 
         {/* Text reveal — each character fades in */}
         <h1 className="font-aref text-5xl sm:text-7xl lg:text-8xl text-ink mb-4 font-bold leading-tight">
-          {nameChars.map((char, i) => (
+          {nameWords.map((word, i) => (
             <span
               key={i}
               className="inline-block transition-all"
               style={{
                 opacity: revealed ? 1 : 0,
-                transform: revealed ? 'translateY(0)' : 'translateY(20px)',
-                transitionDuration: '500ms',
-                transitionDelay: reduced ? '0ms' : `${400 + i * 60}ms`,
+                transform: revealed ? 'translateY(0)' : 'translateY(30px)',
+                transitionDuration: '700ms',
+                transitionDelay: reduced ? '0ms' : `${500 + i * 200}ms`,
                 transitionTimingFunction: 'cubic-bezier(0.22, 0.61, 0.36, 1)',
               }}
             >
-              {char === ' ' ? '\u00A0' : char}
+              {word}{i < nameWords.length - 1 ? '\u00A0' : ''}
             </span>
           ))}
         </h1>

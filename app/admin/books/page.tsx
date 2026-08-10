@@ -1,3 +1,4 @@
+import { showToast } from '@/lib/toast'
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -27,7 +28,7 @@ export default function AdminBooksPage() {
     if (!supabase) return
     await supabase.from('books').delete().eq('id', id)
     setBooks((prev) => prev.filter((b) => b.id !== id))
-    setMsg('تم الحذف')
+    showToast('تم الحذف بنجاح')
     setTimeout(() => setMsg(''), 2500)
   }
 

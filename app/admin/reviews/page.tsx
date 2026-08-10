@@ -1,3 +1,4 @@
+import { showToast } from '@/lib/toast'
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -54,7 +55,7 @@ export default function AdminReviewsPage() {
     if (!supabase) return
     await supabase.from('reviews').delete().eq('id', id)
     setReviews((prev) => prev.filter((r) => r.id !== id))
-    setMsg('تم الحذف')
+    showToast('تم الحذف بنجاح')
     setTimeout(() => setMsg(''), 2500)
   }
 

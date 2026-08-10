@@ -1,3 +1,4 @@
+import { showToast } from '@/lib/toast'
 'use client'
 
 import React, { useState, useEffect } from 'react'
@@ -76,7 +77,7 @@ export default function EditEventPage({ params: paramsPromise }: { params: Promi
 
     const { error } = await supabase.from('events').update(updateData).eq('id', event.id)
     if (error) { setErr(error.message); setSaving(false); return }
-    setMsg('تم الحفظ ✓'); setTimeout(() => setMsg(''), 2500); setSaving(false)
+    showToast('تم الحفظ بنجاح ✓'); setTimeout(() => setMsg(''), 2500); setSaving(false)
   }
 
   if (loading) return <div className="min-h-screen flex items-center justify-center"><p className="text-ink/50 font-tajawal">جاري التحميل...</p></div>

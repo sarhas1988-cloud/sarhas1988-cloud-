@@ -5,6 +5,7 @@ import { Navbar } from '@/components/navbar'
 import { Footer } from '@/components/footer'
 import { PageTransition } from '@/components/page-transition'
 import { EventPulse } from '@/components/event-pulse'
+import { AdminToast } from '@/components/admin-toast'
 
 export const metadata: Metadata = {
   title: 'السيد الريس | كاتب الرعب والأساطير المصرية',
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <PageTransition>{children}</PageTransition>
         <Footer />
         <EventPulse />
+        <AdminToast />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

@@ -1,3 +1,4 @@
+import { showToast } from '@/lib/toast'
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -37,7 +38,7 @@ export default function AdminLinksPage() {
     if (error) { setMsg(error.message); return }
     setNewLink({ category: 'social', label: '', url: '' })
     fetchLinks()
-    setMsg('تمت الإضافة ✓'); setTimeout(() => setMsg(''), 2500)
+    showToast('تمت الإضافة ✓'); setTimeout(() => setMsg(''), 2500)
   }
 
   const handleUpdate = async (id: string, field: string, value: string) => {
@@ -49,7 +50,7 @@ export default function AdminLinksPage() {
 
   const handleSaveUrl = async (id: string, url: string) => {
     await handleUpdate(id, 'url', url)
-    setMsg('تم الحفظ ✓'); setTimeout(() => setMsg(''), 2500)
+    showToast('تم الحفظ بنجاح ✓'); setTimeout(() => setMsg(''), 2500)
   }
 
   const handleDelete = async (id: string) => {
@@ -58,7 +59,7 @@ export default function AdminLinksPage() {
     if (!supabase) return
     await supabase.from('site_links').delete().eq('id', id)
     setLinks((prev) => prev.filter((l) => l.id !== id))
-    setMsg('تم الحذف'); setTimeout(() => setMsg(''), 2500)
+    showToast('تم الحذف بنجاح'); setTimeout(() => setMsg(''), 2500)
   }
 
   const socialLinks = links.filter((l) => l.category === 'social')

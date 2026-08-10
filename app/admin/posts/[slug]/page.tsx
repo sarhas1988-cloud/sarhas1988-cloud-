@@ -1,3 +1,4 @@
+import { showToast } from '@/lib/toast'
 'use client'
 
 import React, { useState, useEffect } from 'react'
@@ -70,7 +71,7 @@ export default function EditPostPage({ params: paramsPromise }: { params: Promis
     const { error } = await supabase.from('posts').update(updateData).eq('id', post.id)
     if (error) { setErr(error.message); setSaving(false); return }
 
-    setMsg('تم الحفظ ✓'); setTimeout(() => setMsg(''), 2500); setSaving(false)
+    showToast('تم الحفظ بنجاح ✓'); setTimeout(() => setMsg(''), 2500); setSaving(false)
   }
 
   if (loading) {

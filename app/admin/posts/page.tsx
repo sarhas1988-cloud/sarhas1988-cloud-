@@ -1,3 +1,4 @@
+import { showToast } from '@/lib/toast'
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -27,7 +28,7 @@ export default function AdminPostsPage() {
     if (!supabase) return
     await supabase.from('posts').delete().eq('id', id)
     setPosts((prev) => prev.filter((p) => p.id !== id))
-    setMsg('تم الحذف'); setTimeout(() => setMsg(''), 2500)
+    showToast('تم الحذف بنجاح'); setTimeout(() => setMsg(''), 2500)
   }
 
   const togglePublished = async (post: Post) => {

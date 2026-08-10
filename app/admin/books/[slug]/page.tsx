@@ -1,3 +1,4 @@
+import { showToast } from '@/lib/toast'
 'use client'
 
 import React, { useState, useEffect } from 'react'
@@ -91,7 +92,7 @@ export default function EditBookPage({ params: paramsPromise }: { params: Promis
       )
     }
 
-    setMsg('تم الحفظ ✓')
+    showToast('تم الحفظ بنجاح ✓')
     setTimeout(() => setMsg(''), 2500)
     setSaving(false)
   }

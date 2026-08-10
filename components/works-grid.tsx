@@ -6,6 +6,7 @@ import { useState, useEffect, useRef } from 'react'
 import type { Book } from '@/types/supabase'
 import { getBookCover, getPlaceholderColor } from '@/types/supabase'
 import { TiltCard } from '@/components/tilt-card'
+import { soundManager } from '@/lib/sounds'
 
 type Filter = 'الكل' | 'روايات' | 'مجموعات قصصية' | 'قلادة الشمس'
 
@@ -78,7 +79,9 @@ export function WorksGrid({ books }: Props) {
             const bg = getPlaceholderColor(book)
             const isVisible = visibleItems.has(i)
             return (
-              <Link key={book.slug} href={`/books/${book.slug}`}>
+              <Link key={book.slug} href={`/books/${book.slug}`}
+                onClick={() => soundManager?.playPageTurn()}
+                onMouseEnter={() => soundManager?.playHover()}>
                 <div className={`transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
                   <TiltCard className="group">
                     <div className="card-lifted relative overflow-hidden rounded-lg mb-3 aspect-[2/3] group-hover:border-gold transition-all duration-300">

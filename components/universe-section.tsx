@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useScrollReveal } from '@/hooks/use-scroll-reveal'
 import type { Book } from '@/types/supabase'
 import { getBookCover, getPlaceholderColor } from '@/types/supabase'
+import { soundManager } from '@/lib/sounds'
 
 interface Props { books: Book[] }
 
@@ -36,7 +37,9 @@ export function UniverseSection({ books }: Props) {
               const cover = getBookCover(book)
               const bg = getPlaceholderColor(book)
               return (
-                <Link key={book.slug} href={`/books/${book.slug}`}>
+                <Link key={book.slug} href={`/books/${book.slug}`}
+                  onClick={() => soundManager?.playPageTurn()}
+                  onMouseEnter={() => soundManager?.playHover()}>
                   <div className="group">
                     <div className="relative overflow-hidden rounded-lg mb-3 aspect-[2/3] border border-gold-subtle hover:border-gold transition-all duration-300"
                       style={{ backgroundColor: bg }}>

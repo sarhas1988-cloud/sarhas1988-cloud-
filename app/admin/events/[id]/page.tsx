@@ -1,5 +1,5 @@
-import { showToast } from '@/lib/toast'
 'use client'
+import { showToast } from '@/lib/toast'
 
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'

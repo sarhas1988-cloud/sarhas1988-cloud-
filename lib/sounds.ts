@@ -1,9 +1,7 @@
-// Global sound manager — Web Audio API, no external files needed
 class SoundManager {
   private ctx: AudioContext | null = null
   private ambientGain: GainNode | null = null
-  private ambientOscs: OscillatorNode[] = []
-  private noiseNode: AudioBufferSourceNode | null = null
+  private ambientNodes: (OscillatorNode | AudioBufferSourceNode)[] = []
   private _ambientPlaying = false
   private _enabled = false
 
@@ -16,7 +14,7 @@ class SoundManager {
     return this.ctx
   }
 
-  // ─── Ambient dark drone ───
+  // ─── AMBIENT: Dark horror atmosphere ───
   startAmbient() {
     if (this._ambientPlaying) return
     const ctx = this.getCtx()
@@ -25,69 +23,103 @@ class SoundManager {
 
     this.ambientGain = ctx.createGain()
     this.ambientGain.gain.setValueAtTime(0, ctx.currentTime)
-    this.ambientGain.gain.linearRampToValueAtTime(0.08, ctx.currentTime + 2) // Fade in
+    this.ambientGain.gain.linearRampToValueAtTime(0.35, ctx.currentTime + 3)
     this.ambientGain.connect(ctx.destination)
 
-    // Dark drone: layered low sine waves
-    const freqs = [55, 58, 82, 110] // Low A, slightly detuned
-    this.ambientOscs = freqs.map((freq, i) => {
+    // Deep sub-bass rumble
+    const sub = ctx.createOscillator()
+    sub.type = 'sine'
+    sub.frequency.setValueAtTime(35, ctx.currentTime)
+    const subGain = ctx.createGain()
+    subGain.gain.setValueAtTime(0.5, ctx.currentTime)
+    sub.connect(subGain)
+    subGain.connect(this.ambientGain)
+    sub.start()
+    this.ambientNodes.push(sub)
+
+    // Dissonant tritone drone (the devil's interval)
+    const droneFreqs = [73.4, 103.8] // D2 and Ab2 — tritone
+    droneFreqs.forEach((freq, i) => {
       const osc = ctx.createOscillator()
-      const oscGain = ctx.createGain()
-      osc.type = i < 2 ? 'sine' : 'triangle'
+      osc.type = 'sawtooth'
       osc.frequency.setValueAtTime(freq, ctx.currentTime)
-      // Slow LFO on frequency for eerie movement
+
+      // Slow creepy pitch wobble
       const lfo = ctx.createOscillator()
+      lfo.frequency.setValueAtTime(0.08 + i * 0.03, ctx.currentTime)
       const lfoGain = ctx.createGain()
-      lfo.frequency.setValueAtTime(0.05 + i * 0.02, ctx.currentTime)
-      lfoGain.gain.setValueAtTime(1.5, ctx.currentTime)
+      lfoGain.gain.setValueAtTime(3, ctx.currentTime)
       lfo.connect(lfoGain)
       lfoGain.connect(osc.frequency)
       lfo.start()
-      
-      oscGain.gain.setValueAtTime(i < 2 ? 0.4 : 0.15, ctx.currentTime)
-      osc.connect(oscGain)
+
+      // Tremolo for unease
+      const tremolo = ctx.createOscillator()
+      tremolo.frequency.setValueAtTime(0.3 + i * 0.15, ctx.currentTime)
+      const tremoloGain = ctx.createGain()
+      tremoloGain.gain.setValueAtTime(0.15, ctx.currentTime)
+      tremolo.connect(tremoloGain)
+
+      const oscGain = ctx.createGain()
+      oscGain.gain.setValueAtTime(0.2, ctx.currentTime)
+      tremoloGain.connect(oscGain.gain)
+
+      // Dark lowpass filter
+      const filter = ctx.createBiquadFilter()
+      filter.type = 'lowpass'
+      filter.frequency.setValueAtTime(400, ctx.currentTime)
+      filter.Q.setValueAtTime(2, ctx.currentTime)
+
+      osc.connect(filter)
+      filter.connect(oscGain)
       oscGain.connect(this.ambientGain!)
       osc.start()
-      return osc
+      tremolo.start()
+      this.ambientNodes.push(osc)
     })
 
-    // Filtered noise for atmosphere (wind-like)
-    const bufferSize = ctx.sampleRate * 4
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate)
-    const data = buffer.getChannelData(0)
-    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * 0.3
-    
-    this.noiseNode = ctx.createBufferSource()
-    this.noiseNode.buffer = buffer
-    this.noiseNode.loop = true
-    
-    const noiseFilter = ctx.createBiquadFilter()
-    noiseFilter.type = 'lowpass'
-    noiseFilter.frequency.setValueAtTime(200, ctx.currentTime)
-    
-    const noiseGain = ctx.createGain()
-    noiseGain.gain.setValueAtTime(0.06, ctx.currentTime)
-    
-    this.noiseNode.connect(noiseFilter)
-    noiseFilter.connect(noiseGain)
-    noiseGain.connect(this.ambientGain!)
-    this.noiseNode.start()
+    // Dark wind noise
+    const windBuf = ctx.createBuffer(1, ctx.sampleRate * 6, ctx.sampleRate)
+    const windData = windBuf.getChannelData(0)
+    for (let i = 0; i < windData.length; i++) {
+      windData[i] = (Math.random() * 2 - 1)
+    }
+    const wind = ctx.createBufferSource()
+    wind.buffer = windBuf
+    wind.loop = true
+
+    const windFilter = ctx.createBiquadFilter()
+    windFilter.type = 'bandpass'
+    windFilter.frequency.setValueAtTime(300, ctx.currentTime)
+    windFilter.Q.setValueAtTime(0.5, ctx.currentTime)
+
+    // Slow filter sweep for movement
+    const windLfo = ctx.createOscillator()
+    windLfo.frequency.setValueAtTime(0.04, ctx.currentTime)
+    const windLfoGain = ctx.createGain()
+    windLfoGain.gain.setValueAtTime(200, ctx.currentTime)
+    windLfo.connect(windLfoGain)
+    windLfoGain.connect(windFilter.frequency)
+    windLfo.start()
+
+    const windGain = ctx.createGain()
+    windGain.gain.setValueAtTime(0.2, ctx.currentTime)
+
+    wind.connect(windFilter)
+    windFilter.connect(windGain)
+    windGain.connect(this.ambientGain!)
+    wind.start()
+    this.ambientNodes.push(wind)
   }
 
   stopAmbient() {
     if (!this._ambientPlaying || !this.ctx || !this.ambientGain) return
-    const ctx = this.ctx
     this._ambientPlaying = false
-
-    // Fade out
-    this.ambientGain.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.5)
-    
+    this.ambientGain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 2)
     setTimeout(() => {
-      this.ambientOscs.forEach(o => { try { o.stop() } catch {} })
-      this.ambientOscs = []
-      try { this.noiseNode?.stop() } catch {}
-      this.noiseNode = null
-    }, 1600)
+      this.ambientNodes.forEach(n => { try { n.stop() } catch {} })
+      this.ambientNodes = []
+    }, 2200)
   }
 
   toggleAmbient() {
@@ -96,62 +128,71 @@ class SoundManager {
     return this._ambientPlaying
   }
 
-  // ─── Page turn sound ───
+  // ─── PAGE TURN: Layered paper rustle ───
   playPageTurn() {
     const ctx = this.getCtx()
-    const duration = 0.35
 
-    // Filtered noise burst = paper rustling
-    const bufferSize = Math.ceil(ctx.sampleRate * duration)
-    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate)
-    const data = buffer.getChannelData(0)
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = (Math.random() * 2 - 1)
-    }
+    // 3 overlapping noise bursts = realistic paper sound
+    const layers = [
+      { delay: 0,    freq: 2500, q: 0.6, gain: 0.5,  dur: 0.25 },
+      { delay: 0.04, freq: 4000, q: 0.8, gain: 0.35, dur: 0.20 },
+      { delay: 0.10, freq: 1800, q: 0.5, gain: 0.4,  dur: 0.30 },
+    ]
 
-    const source = ctx.createBufferSource()
-    source.buffer = buffer
+    layers.forEach((l) => {
+      const buf = ctx.createBuffer(1, Math.ceil(ctx.sampleRate * l.dur), ctx.sampleRate)
+      const data = buf.getChannelData(0)
+      // Brownian noise (smoother than white noise = more paper-like)
+      let last = 0
+      for (let i = 0; i < data.length; i++) {
+        const white = Math.random() * 2 - 1
+        last = (last + (0.02 * white)) / 1.02
+        data[i] = last * 35 // amplify
+      }
 
-    // Bandpass filter for paper-like quality
-    const filter = ctx.createBiquadFilter()
-    filter.type = 'bandpass'
-    filter.frequency.setValueAtTime(3000, ctx.currentTime)
-    filter.Q.setValueAtTime(0.8, ctx.currentTime)
+      const src = ctx.createBufferSource()
+      src.buffer = buf
 
-    // Envelope: quick attack, medium decay
-    const gain = ctx.createGain()
-    gain.gain.setValueAtTime(0, ctx.currentTime)
-    gain.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.02)
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration)
+      const filter = ctx.createBiquadFilter()
+      filter.type = 'bandpass'
+      filter.frequency.setValueAtTime(l.freq, ctx.currentTime)
+      filter.Q.setValueAtTime(l.q, ctx.currentTime)
 
-    source.connect(filter)
-    filter.connect(gain)
-    gain.connect(ctx.destination)
-    source.start()
-    source.stop(ctx.currentTime + duration)
+      const gain = ctx.createGain()
+      const t = ctx.currentTime + l.delay
+      gain.gain.setValueAtTime(0, t)
+      gain.gain.linearRampToValueAtTime(l.gain, t + 0.015)
+      gain.gain.setValueAtTime(l.gain, t + l.dur * 0.3)
+      gain.gain.exponentialRampToValueAtTime(0.001, t + l.dur)
+
+      src.connect(filter)
+      filter.connect(gain)
+      gain.connect(ctx.destination)
+      src.start(t)
+      src.stop(t + l.dur)
+    })
   }
 
-  // ─── Hover whisper sound ───
+  // ─── HOVER: Subtle dark tone ───
   playHover() {
     const ctx = this.getCtx()
-    const duration = 0.15
+    const dur = 0.18
 
     const osc = ctx.createOscillator()
     osc.type = 'sine'
-    osc.frequency.setValueAtTime(800, ctx.currentTime)
-    osc.frequency.exponentialRampToValueAtTime(400, ctx.currentTime + duration)
+    osc.frequency.setValueAtTime(600, ctx.currentTime)
+    osc.frequency.exponentialRampToValueAtTime(250, ctx.currentTime + dur)
 
     const gain = ctx.createGain()
     gain.gain.setValueAtTime(0, ctx.currentTime)
-    gain.gain.linearRampToValueAtTime(0.03, ctx.currentTime + 0.02)
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration)
+    gain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.02)
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur)
 
     osc.connect(gain)
     gain.connect(ctx.destination)
     osc.start()
-    osc.stop(ctx.currentTime + duration)
+    osc.stop(ctx.currentTime + dur)
   }
 }
 
-// Singleton
 export const soundManager = typeof window !== 'undefined' ? new SoundManager() : null

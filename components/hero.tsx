@@ -79,7 +79,7 @@ export function Hero() {
       {/* Content */}
       <div className="relative z-10 text-center w-full px-6 flex-shrink-0 mt-6 sm:mt-8">
         <p className={`text-xs sm:text-sm text-ember tracking-widest mb-2 font-tajawal font-semibold transition-all duration-700 ${revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          كاتب الثريلر والأساطير المصرية
+          كاتب الرعب والأساطير المصرية
         </p>
 
         {/* Text reveal — each character fades in */}

@@ -40,7 +40,7 @@ export function Footer() {
           <div className="col-span-2 sm:col-span-1">
             <Link href="/" className="font-aref text-xl text-ember font-bold mb-2 block">السيد الريس</Link>
             <p className="text-ink/50 font-tajawal text-xs leading-relaxed">
-              كاتب الثريلر والأساطير المصرية.
+              كاتب الرعب والأساطير المصرية.
               <br />صاحب عالم «قلادة الشمس».
             </p>
           </div>

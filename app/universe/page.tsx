@@ -92,7 +92,7 @@ export default async function UniversePage() {
             {[
               { icon: '𓂀', title: 'الأساطير المصرية', desc: 'طقوس فرعونية وكهنة قدماء يعبرون الزمن لتحقيق نبوءات مظلمة.' },
               { icon: '𓃭', title: 'الصراع بين النور والظلام', desc: 'معركة أبدية بين قوى تسعى لإعادة كتابة التاريخ وحرّاس يقفون في طريقها.' },
-              { icon: '𓁹', title: 'الثريلر النفسي', desc: 'تشويق يمزج الرعب بالغموض، حيث لا شيء كما يبدو ولا أحد فوق الشبهات.' },
+              { icon: '𓁹', title: 'الرعب النفسي', desc: 'تشويق يمزج الرعب بالغموض، حيث لا شيء كما يبدو ولا أحد فوق الشبهات.' },
             ].map((theme) => (
               <div key={theme.title} className="card-lifted rounded-xl p-5 text-center">
                 <span className="text-3xl mb-3 block">{theme.icon}</span>

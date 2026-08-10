@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 export const metadata = {
   title: 'عن الكاتب — السيد الريس',
-  description: 'تعرف على السيد الريس، كاتب الثريلر والأساطير المصرية',
+  description: 'تعرف على السيد الريس، كاتب الرعب والأساطير المصرية',
 }
 
 export default function AboutPage() {

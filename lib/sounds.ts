@@ -64,6 +64,8 @@ class SoundManager {
   }
 
   // ─── PAGE TURN — one shot, no repeat ───
+  // Empty — kept for compatibility
+  playHover() {}
   playPageTurn() {
     if (!this.pageTurnAudio) {
       this.pageTurnAudio = new Audio('/sounds/page-turn.mp3')

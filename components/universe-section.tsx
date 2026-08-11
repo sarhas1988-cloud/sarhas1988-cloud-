@@ -38,8 +38,7 @@ export function UniverseSection({ books }: Props) {
               const bg = getPlaceholderColor(book)
               return (
                 <Link key={book.slug} href={`/books/${book.slug}`}
-                  onClick={() => soundManager?.playPageTurn()}
-                  onMouseEnter={() => soundManager?.playHover()}>
+                  onClick={() => soundManager?.playPageTurn()}>
                   <div className="group">
                     <div className="relative overflow-hidden rounded-lg mb-3 aspect-[2/3] border border-gold-subtle hover:border-gold transition-all duration-300"
                       style={{ backgroundColor: bg }}>

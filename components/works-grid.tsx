@@ -80,8 +80,7 @@ export function WorksGrid({ books }: Props) {
             const isVisible = visibleItems.has(i)
             return (
               <Link key={book.slug} href={`/books/${book.slug}`}
-                onClick={() => soundManager?.playPageTurn()}
-                onMouseEnter={() => soundManager?.playHover()}>
+                onClick={() => soundManager?.playPageTurn()}>
                 <div className={`transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}>
                   <TiltCard className="group">
                     <div className="card-lifted relative overflow-hidden rounded-lg mb-3 aspect-[2/3] group-hover:border-gold transition-all duration-300">

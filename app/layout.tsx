@@ -6,6 +6,7 @@ import { Footer } from '@/components/footer'
 import { PageTransition } from '@/components/page-transition'
 import { EventPulse } from '@/components/event-pulse'
 import { AdminToast } from '@/components/admin-toast'
+import { ScrollToTop } from '@/components/scroll-to-top'
 
 export const metadata: Metadata = {
   title: 'السيد الريس | كاتب الرعب والأساطير المصرية',
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Footer />
         <EventPulse />
         <AdminToast />
+        <ScrollToTop />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

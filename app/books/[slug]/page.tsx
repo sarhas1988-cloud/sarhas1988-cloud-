@@ -6,6 +6,7 @@ import type { Book, BuyLink } from '@/types/supabase'
 import { getBookCover, getPlaceholderColor } from '@/types/supabase'
 import { BookReviews } from '@/components/book-reviews'
 import { BuyEbook } from '@/components/buy-ebook'
+import { ShareButtons } from '@/components/share-buttons'
 
 export const dynamic = 'force-dynamic'
 
@@ -83,6 +84,8 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
               {b.tagline && (
                 <p className="text-lg text-ink/60 font-tajawal border-r-4 border-ember pr-4">{b.tagline}</p>
               )}
+
+              <ShareButtons title={b.title} slug={b.slug} />
             </div>
 
             {b.synopsis && (

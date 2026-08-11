@@ -102,7 +102,7 @@ export default function AdminOrdersPage() {
                       <span className={`px-2 py-0.5 rounded text-xs font-tajawal ${
                         o.status === 'completed' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-gold/20 text-gold'
                       }`}>{o.status === 'completed' ? 'مكتمل' : 'معلق'}</span>
-                      {o.downloaded && <Eye size={12} className="inline mr-2 text-ink/30" title="تم التحميل" />}
+                      {o.downloaded && <span title="تم التحميل"><Eye size={12} className="inline mr-2 text-ink/30" /></span>}
                     </td>
                     <td className="py-3 px-4 font-tajawal text-ink/40 text-xs hidden sm:table-cell">{fmt(o.created_at)}</td>
                   </tr>

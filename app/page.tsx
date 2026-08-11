@@ -6,6 +6,7 @@ import { WorksGrid } from '@/components/works-grid'
 import { AboutSection } from '@/components/about-section'
 import { NewsletterSection } from '@/components/newsletter-section'
 import { UpcomingEvents } from '@/components/upcoming-events'
+import { QuotesCarousel } from '@/components/quotes-carousel'
 import type { Book } from '@/types/supabase'
 
 export const revalidate = 60
@@ -34,6 +35,7 @@ export default async function HomePage() {
       <Manifesto />
       <UniverseSection books={seriesBooks} />
       <WorksGrid books={books} />
+      <QuotesCarousel />
       <AboutSection />
       <UpcomingEvents />
       <NewsletterSection />

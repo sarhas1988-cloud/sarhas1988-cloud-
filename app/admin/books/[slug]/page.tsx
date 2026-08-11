@@ -19,12 +19,13 @@ export default function EditBookPage({ params: paramsPromise }: { params: Promis
   const [err, setErr]         = useState('')
   const [msg, setMsg]         = useState('')
   const [coverFile, setCoverFile] = useState<File | null>(null)
+  const [ebookFile, setEbookFile] = useState<File | null>(null)
   const [buyLinks, setBuyLinks]   = useState<BuyLinkRow[]>([])
 
   const [form, setForm] = useState({
     title: '', slug: '', type: 'رواية', series: '',
     edition: '', award: '', tagline: '', synopsis: '',
-    sort_order: '0', published: true,
+    sort_order: '0', published: true, ebook_price: '',
   })
 
   const set = (k: keyof typeof form, v: string | boolean) =>
@@ -42,7 +43,7 @@ export default function EditBookPage({ params: paramsPromise }: { params: Promis
         title: bk.title, slug: bk.slug, type: bk.type,
         series: bk.series ?? '', edition: bk.edition ?? '',
         award: bk.award ?? '', tagline: bk.tagline ?? '',
-        synopsis: bk.synopsis ?? '', sort_order: String(bk.sort_order),
+        synopsis: bk.synopsis ?? '', sort_order: String(bk.sort_order), ebook_price: bk.ebook_price ? String(bk.ebook_price) : '',
         published: bk.published,
       })
       const { data: links } = await supabase.from('buy_links').select('*').eq('book_id', bk.id).order('sort_order')
@@ -63,6 +64,17 @@ export default function EditBookPage({ params: paramsPromise }: { params: Promis
     return supabase.storage.from('covers').getPublicUrl(path).data.publicUrl
   }
 
+  const uploadEbook = async (): Promise<string | null> => {
+    if (!ebookFile || !book) return null
+    const supabase = createClient()
+    if (!supabase) return null
+    const ext = ebookFile.name.split('.').pop()
+    const path = 'ebooks/' + book.slug + '-' + Date.now() + '.' + ext
+    const { error } = await supabase.storage.from('covers').upload(path, ebookFile, { upsert: true })
+    if (error) return null
+    return supabase.storage.from('covers').getPublicUrl(path).data.publicUrl
+  }
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!book) return
@@ -76,9 +88,11 @@ export default function EditBookPage({ params: paramsPromise }: { params: Promis
       series: form.series.trim() || null, edition: form.edition.trim() || null,
       award: form.award.trim() || null, tagline: form.tagline.trim() || null,
       synopsis: form.synopsis.trim() || null, sort_order: parseInt(form.sort_order) || 0,
-      published: form.published, updated_at: new Date().toISOString(),
+      published: form.published, ebook_price: form.ebook_price ? parseFloat(form.ebook_price) : null, updated_at: new Date().toISOString(),
     }
     if (coverUrl) updateData.cover_url = coverUrl
+    const ebookUrl = await uploadEbook()
+    if (ebookUrl) updateData.ebook_file_url = ebookUrl
 
     const { error } = await supabase.from('books').update(updateData).eq('id', book.id)
     if (error) { setErr(error.message); setSaving(false); return }
@@ -142,6 +156,17 @@ export default function EditBookPage({ params: paramsPromise }: { params: Promis
               className="w-full text-ink/70 font-tajawal text-sm file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:bg-ember file:text-obsidian file:font-semibold file:cursor-pointer cursor-pointer" />
             {book?.cover_url && !coverFile && (
               <p className="text-ink/40 text-xs font-tajawal mt-1">الغلاف الحالي محفوظ</p>
+            )}
+          </Field>
+          <Field label="سعر النسخة الإلكترونية (بالجنيه — اتركه فاضي لو مفيش)">
+            <input type="number" value={form.ebook_price} onChange={(e) => set('ebook_price', e.target.value)}
+              className={inp} placeholder="50" min="0" step="0.01" />
+          </Field>
+          <Field label="رفع ملف الكتاب الإلكتروني (PDF)">
+            <input type="file" accept=".pdf,.epub" onChange={(e) => setEbookFile(e.target.files?.[0] ?? null)}
+              className="w-full text-ink/70 font-tajawal text-sm file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:bg-gold file:text-obsidian file:font-semibold file:cursor-pointer cursor-pointer" />
+            {book?.ebook_file_url && !ebookFile && (
+              <p className="text-gold/60 text-xs font-tajawal mt-1">✓ ملف إلكتروني مرفوع</p>
             )}
           </Field>
           <Field label="ترتيب العرض">

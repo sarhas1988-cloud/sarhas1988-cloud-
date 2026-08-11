@@ -5,6 +5,7 @@ import { createClient } from '@/utils/supabase/server'
 import type { Book, BuyLink } from '@/types/supabase'
 import { getBookCover, getPlaceholderColor } from '@/types/supabase'
 import { BookReviews } from '@/components/book-reviews'
+import { BuyEbook } from '@/components/buy-ebook'
 
 export const dynamic = 'force-dynamic'
 
@@ -100,6 +101,12 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
                     {link.label}
                   </a>
                 ))}
+              </div>
+            )}
+
+            {b.ebook_price && b.ebook_price > 0 && (
+              <div className="pt-4">
+                <BuyEbook bookId={b.id} bookTitle={b.title} price={b.ebook_price} />
               </div>
             )}
           </div>

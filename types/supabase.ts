@@ -14,6 +14,8 @@ export interface Book {
   published: boolean
   created_at: string
   updated_at: string
+  ebook_price?: number | null
+  ebook_file_url?: string | null
 }
 
 export interface BuyLink {

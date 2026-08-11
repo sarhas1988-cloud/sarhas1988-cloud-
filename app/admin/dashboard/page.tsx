@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/utils/supabase/client'
-import { BookOpen, FileText, Mail, Star, MessageSquare, Calendar, Link2, LogOut } from 'lucide-react'
+import { BookOpen, FileText, Mail, Star, MessageSquare, Calendar, Link2, ShoppingBag, LogOut } from 'lucide-react'
 
 export default function DashboardPage() {
   const [email, setEmail] = useState('')
@@ -53,6 +53,7 @@ export default function DashboardPage() {
             { href: '/admin/reviews',     icon: Star,          label: 'التقييمات',   sub: 'اعتماد وإدارة آراء القرّاء', color: 'text-ember' },
             { href: '/admin/events',      icon: Calendar,      label: 'الفعاليات',   sub: 'معارض وحفلات توقيع وندوات', color: 'text-ember' },
             { href: '/admin/contacts',    icon: MessageSquare, label: 'الرسائل',     sub: 'رسائل التواصل من الزوار',    color: 'text-gold' },
+            { href: '/admin/orders',      icon: ShoppingBag,   label: 'الطلبات',     sub: 'مبيعات الكتب الإلكترونية',   color: 'text-emerald-400' },
             { href: '/admin/links',       icon: Link2,         label: 'الروابط',      sub: 'سوشيال ميديا ومتاجر الشراء', color: 'text-gold' },
             { href: '/admin/subscribers', icon: Mail,          label: 'المشتركون',   sub: 'إدارة قائمة البريد',          color: 'text-blood' },
           ].map(({ href, icon: Icon, label, sub, color }) => (

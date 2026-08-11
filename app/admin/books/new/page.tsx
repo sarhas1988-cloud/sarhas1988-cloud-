@@ -21,12 +21,13 @@ export default function NewBookPage() {
   const [saving, setSaving] = useState(false)
   const [err, setErr]       = useState('')
   const [coverFile, setCoverFile] = useState<File | null>(null)
+  const [ebookFile, setEbookFile] = useState<File | null>(null)
   const [buyLinks, setBuyLinks]   = useState<BuyLinkRow[]>([{ label: '', url: '' }])
 
   const [form, setForm] = useState({
     title: '', slug: '', type: 'رواية', series: '',
     edition: '', award: '', tagline: '', synopsis: '',
-    sort_order: '0', published: true,
+    sort_order: '0', published: true, ebook_price: '',
   })
 
   const set = (k: keyof typeof form, v: string | boolean) =>
@@ -48,6 +49,17 @@ export default function NewBookPage() {
     return data.publicUrl
   }
 
+  const uploadEbook = async (slug: string): Promise<string | null> => {
+    if (!ebookFile) return null
+    const supabase = createClient()
+    if (!supabase) return null
+    const ext = ebookFile.name.split('.').pop()
+    const path = 'ebooks/' + slug + '-' + Date.now() + '.' + ext
+    const { error } = await supabase.storage.from('covers').upload(path, ebookFile, { upsert: true })
+    if (error) return null
+    return supabase.storage.from('covers').getPublicUrl(path).data.publicUrl
+  }
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!form.title.trim()) { setErr('العنوان مطلوب'); return }
@@ -67,6 +79,8 @@ export default function NewBookPage() {
       tagline: form.tagline.trim() || null,
       synopsis: form.synopsis.trim() || null,
       cover_url: coverUrl,
+      ebook_price: form.ebook_price ? parseFloat(form.ebook_price) : null,
+      ebook_file_url: await uploadEbook(form.slug),
       sort_order: parseInt(form.sort_order) || 0,
       published: form.published,
     }).select('id').single()
@@ -147,6 +161,18 @@ export default function NewBookPage() {
             <input type="file" accept="image/*"
               onChange={(e) => setCoverFile(e.target.files?.[0] ?? null)}
               className="w-full text-ink/70 font-tajawal text-sm file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:bg-ember file:text-obsidian file:font-semibold file:cursor-pointer cursor-pointer" />
+          </Field>
+
+          {/* Ebook price */}
+          <Field label="سعر النسخة الإلكترونية (بالجنيه — اتركه فاضي لو مفيش)">
+            <input type="number" value={form.ebook_price} onChange={(e) => set('ebook_price', e.target.value)}
+              className={inp} placeholder="50" min="0" step="0.01" />
+          </Field>
+
+          {/* Ebook file */}
+          <Field label="ملف الكتاب الإلكتروني (PDF)">
+            <input type="file" accept=".pdf,.epub" onChange={(e) => setEbookFile(e.target.files?.[0] ?? null)}
+              className="w-full text-ink/70 font-tajawal text-sm file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:bg-gold file:text-obsidian file:font-semibold file:cursor-pointer cursor-pointer" />
           </Field>
 
           {/* Sort order */}

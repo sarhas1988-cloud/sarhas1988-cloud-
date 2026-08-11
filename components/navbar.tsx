@@ -5,7 +5,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Menu, X } from 'lucide-react'
 import { SearchButton } from '@/components/search-modal'
-import { SoundToggle } from '@/components/sound-toggle'
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -52,7 +51,6 @@ export function Navbar() {
               >{l.label}</Link>
             ))}
             <SearchButton />
-            <SoundToggle />
             <Link href="/#join" className="bg-ember text-white px-5 py-1.5 rounded-lg font-tajawal font-semibold text-sm hover:bg-ember/90 transition-colors">
               القصة المجانية
             </Link>
@@ -60,7 +58,6 @@ export function Navbar() {
 
           {/* Mobile buttons */}
           <div className="md:hidden flex items-center gap-1">
-            <SoundToggle />
             <SearchButton />
             <button className="p-2 text-ink" onClick={() => setIsOpen(!isOpen)} aria-label="القائمة">
               {isOpen ? <X size={22} /> : <Menu size={22} />}

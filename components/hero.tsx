@@ -3,15 +3,9 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { createClient } from '@/utils/supabase/client'
-import type { Book } from '@/types/supabase'
-import { getBookCover } from '@/types/supabase'
-import { EmberParticles } from '@/components/ember-particles'
-import { TiltCard } from '@/components/tilt-card'
 
 export function Hero() {
   const [reduced, setReduced] = useState(false)
-  const [latestBook, setLatestBook] = useState<Book | null>(null)
   const [revealed, setRevealed] = useState(false)
 
   useEffect(() => {
@@ -27,62 +21,41 @@ export function Hero() {
     return () => clearTimeout(timer)
   }, [])
 
-  useEffect(() => {
-    const fetchLatest = async () => {
-      try {
-        const supabase = createClient()
-        if (!supabase) return
-        const { data } = await supabase
-          .from('books').select('*').eq('published', true)
-          .order('sort_order', { ascending: false }).limit(1).single()
-        if (data) setLatestBook(data as Book)
-      } catch {}
-    }
-    fetchLatest()
-  }, [])
-
-  const cover = latestBook ? getBookCover(latestBook) : null
   const nameWords = ['السيد', 'الريس']
 
   return (
     <section className="relative min-h-svh flex flex-col items-center justify-between overflow-hidden pt-14 pb-6">
       {/* Warm gradient */}
       <div className="absolute top-0 inset-x-0 h-[50%] pointer-events-none"
-        style={{ background: 'linear-gradient(to bottom, rgba(212,80,31,0.06), transparent)' }} />
+        style={{ background: 'linear-gradient(to bottom, rgba(199,154,59,0.05), transparent)' }} />
 
-      {/* Ember particles */}
-      <EmberParticles />
-
-      {/* Featured book cover with 3D tilt */}
+      {/* Logo emblem */}
       <div className="relative flex-shrink-0 mt-6 sm:mt-10 z-[2]">
-        {cover ? (
-          <Link href={`/books/${latestBook?.slug}`} className="block group">
-            <TiltCard>
-              <div className="relative w-40 sm:w-52 md:w-60 aspect-[2/3] rounded-lg overflow-hidden shadow-2xl border border-gold-subtle group-hover:shadow-ember/20 transition-all duration-500"
-                style={{ animation: reduced ? 'none' : 'float 4s ease-in-out infinite' }}>
-                <Image src={cover} alt={latestBook?.title ?? ''} fill className="object-cover" priority />
-                {/* Shine sweep on hover */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 overflow-hidden">
-                  <div className="absolute inset-0 bg-gradient-to-l from-transparent via-white/15 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
-                </div>
-              </div>
-            </TiltCard>
-            <p className="text-center mt-3 text-xs text-ink/50 font-tajawal">أحدث إصدار</p>
-          </Link>
-        ) : (
-          <div className="w-40 sm:w-52 h-60 sm:h-80 rounded-lg bg-obsidian-warm border border-gold-subtle flex items-center justify-center">
-            <p className="font-aref text-xl text-ink/30">✦</p>
-          </div>
-        )}
+        <div
+          className={`relative w-44 h-44 sm:w-56 sm:h-56 md:w-64 md:h-64 transition-all duration-1000 ${
+            revealed ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+          }`}
+          style={{ animation: reduced ? 'none' : 'float 4s ease-in-out infinite' }}
+        >
+          <Image
+            src="/images/logo-emblem.png"
+            alt="السيد الريس"
+            fill
+            className="object-contain drop-shadow-2xl"
+            priority
+          />
+          {/* Subtle glow behind logo */}
+          <div className="absolute inset-[-30%] rounded-full pointer-events-none -z-10"
+            style={{ background: 'radial-gradient(circle, rgba(199,154,59,0.12), transparent 65%)', filter: 'blur(20px)' }} />
+        </div>
       </div>
 
       {/* Content */}
       <div className="relative z-10 text-center w-full px-6 flex-shrink-0 mt-6 sm:mt-8">
-        <p className={`text-xs sm:text-sm text-ember tracking-widest mb-2 font-tajawal font-semibold transition-all duration-700 ${revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <p className={`text-xs sm:text-sm text-gold tracking-widest mb-2 font-tajawal font-semibold transition-all duration-700 ${revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           كاتب الرعب والأساطير المصرية
         </p>
 
-        {/* Text reveal — each character fades in */}
         <h1 className="font-aref text-5xl sm:text-7xl lg:text-8xl text-ink mb-4 font-bold leading-tight">
           {nameWords.map((word, i) => (
             <span

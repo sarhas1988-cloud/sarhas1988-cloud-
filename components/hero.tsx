@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { GoldenDust } from '@/components/golden-dust'
+import { FogEffect } from '@/components/fog-effect'
 
 export function Hero() {
   const [reduced, setReduced] = useState(false)
@@ -29,6 +31,10 @@ export function Hero() {
       <div className="absolute top-0 inset-x-0 h-[50%] pointer-events-none"
         style={{ background: 'linear-gradient(to bottom, rgba(199,154,59,0.05), transparent)' }} />
 
+      {/* Fog + golden dust */}
+      <FogEffect />
+      <GoldenDust />
+
       {/* Logo emblem */}
       <div className="relative flex-shrink-0 mt-6 sm:mt-10 z-[2]">
         <div
@@ -41,7 +47,7 @@ export function Hero() {
             src="/images/logo-emblem.png"
             alt="السيد الريس"
             fill
-            className="object-contain drop-shadow-2xl"
+            className="object-contain"
             priority
           />
           {/* Subtle glow behind logo */}

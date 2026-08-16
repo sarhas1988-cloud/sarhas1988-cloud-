@@ -10,20 +10,20 @@ import { ScrollToTop } from '@/components/scroll-to-top'
 import { SplashScreen } from '@/components/splash-screen'
 
 export const metadata: Metadata = {
-  title: 'السيد الريس | كاتب الرعب والأساطير المصرية',
+  title: 'السيد الريس | كاتب الرعب النفسي والجريمة والأساطير المصرية',
   description: 'استكشف عالم قلادة الشمس — حيث يلتقي الموت بالطقوس، ويُعاد كتابةُ التاريخ من خلف الظلام.',
   metadataBase: new URL('https://sarhas1988-cloud.vercel.app'),
   openGraph: {
-    title: 'السيد الريس | كاتب الرعب والأساطير المصرية',
+    title: 'السيد الريس | كاتب الرعب النفسي والجريمة والأساطير المصرية',
     description: 'صاحب عالم «قلادة الشمس» — حيث يلتقي الموت بالطقوس، ويُعاد كتابةُ التاريخ من خلف الظلام.',
     type: 'website',
     siteName: 'السيد الريس',
     locale: 'ar_AR',
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'السيد الريس — كاتب الرعب والأساطير المصرية' }],
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'السيد الريس — كاتب الرعب النفسي والجريمة والأساطير المصرية' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'السيد الريس | كاتب الرعب والأساطير المصرية',
+    title: 'السيد الريس | كاتب الرعب النفسي والجريمة والأساطير المصرية',
     description: 'صاحب عالم «قلادة الشمس» — حيث يلتقي الموت بالطقوس، ويُعاد كتابةُ التاريخ من خلف الظلام.',
     images: ['/og-image.png'],
   },

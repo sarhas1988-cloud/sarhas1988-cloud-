@@ -8,18 +8,9 @@ export function SplashScreen() {
   const [fadeOut, setFadeOut] = useState(false)
 
   useEffect(() => {
-    // Check if already shown this session
-    if (sessionStorage.getItem('splash_shown')) {
-      setVisible(false)
-      return
-    }
-
     const timer = setTimeout(() => {
       setFadeOut(true)
-      setTimeout(() => {
-        setVisible(false)
-        sessionStorage.setItem('splash_shown', '1')
-      }, 800)
+      setTimeout(() => setVisible(false), 800)
     }, 2500)
 
     return () => clearTimeout(timer)
@@ -42,7 +33,7 @@ export function SplashScreen() {
 
       {/* Logo */}
       <div className={`relative transition-all duration-1000 ${fadeOut ? 'scale-95' : 'animate-splash-in'}`}>
-        <div className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 relative">
+        <div className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 relative rounded-full overflow-hidden">
           <Image
             src="/images/logo-emblem.png"
             alt="السيد الريس"

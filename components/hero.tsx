@@ -59,7 +59,7 @@ export function Hero() {
       {/* Content */}
       <div className="relative z-10 text-center w-full px-6 flex-shrink-0 mt-6 sm:mt-8">
         <p className={`text-xs sm:text-sm text-gold tracking-widest mb-2 font-tajawal font-semibold transition-all duration-700 ${revealed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          كاتب الرعب والأساطير المصرية
+          كاتب الرعب النفسي والجريمة والأساطير المصرية
         </p>
 
         <h1 className="font-aref text-5xl sm:text-7xl lg:text-8xl text-ink mb-4 font-bold leading-tight">

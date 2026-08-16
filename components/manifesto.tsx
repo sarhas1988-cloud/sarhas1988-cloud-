@@ -2,6 +2,7 @@
 
 import { useScrollReveal } from '@/hooks/use-scroll-reveal'
 import { useCounter } from '@/hooks/use-counter'
+import { HorusEye } from '@/components/horus-eye'
 
 function AnimatedStat({ target, label, arabicNum }: { target: number; label: string; arabicNum: string }) {
   const { count, ref } = useCounter(target, 1200)
@@ -27,6 +28,7 @@ export function Manifesto() {
       }`}
     >
       <div className="max-w-3xl mx-auto text-center">
+        <div className="mb-8"><HorusEye /></div>
         <blockquote className="font-aref text-xl sm:text-3xl lg:text-4xl text-ink leading-relaxed mb-10 sm:mb-14">
           إنهم مَن يستترون خلف الظلام.
           <span className="text-ember"> من الموت </span>

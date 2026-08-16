@@ -8,6 +8,13 @@ export function SplashScreen() {
   const [fadeOut, setFadeOut] = useState(false)
 
   useEffect(() => {
+    // Play wolf howl on splash open
+    try {
+      const howl = new Audio('/sounds/wolf-howl.mp3')
+      howl.volume = 0.5
+      howl.play().catch(() => {})
+    } catch {}
+
     const timer = setTimeout(() => {
       setFadeOut(true)
       setTimeout(() => setVisible(false), 800)
